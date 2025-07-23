@@ -1,0 +1,602 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 1,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "PostgreSQL"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "title": "Request Count per Endpoint",
+        "type": "timeseries",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "PostgreSQL"
+            },
+            "editorMode": "code",
+            "format": "time_series",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  date_trunc('minute', timestamp) AS time,\n  path,\n  count(*) as value\nFROM\n  api_logs\nWHERE\n  $__timeFilter(timestamp)\nGROUP BY\n  time, path\nORDER BY\n  time",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ]
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "PostgreSQL"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "title": "Response Time Trends",
+        "type": "timeseries",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "PostgreSQL"
+            },
+            "editorMode": "code",
+            "format": "time_series",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  date_trunc('minute', timestamp) AS time,\n  path,\n  avg(response_time * 1000) as value\nFROM\n  api_logs\nWHERE\n  $__timeFilter(timestamp)\nGROUP BY\n  time, path\nORDER BY\n  time",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ]
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "PostgreSQL"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 5
+                },
+                {
+                  "color": "red",
+                  "value": 10
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "id": 3,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true
+        },
+        "title": "Most Frequent Errors",
+        "type": "bargauge",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "PostgreSQL"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  error_type as metric,\n  count(*) as value\nFROM\n  error_logs\nWHERE\n  $__timeFilter(timestamp)\nGROUP BY\n  error_type\nORDER BY\n  value DESC\nLIMIT 10",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ]
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "PostgreSQL"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto",
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "id": 4,
+        "options": {
+          "footer": {
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true
+        },
+        "title": "Real-Time Logs",
+        "type": "table",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "PostgreSQL"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  timestamp,\n  method,\n  path,\n  status_code,\n  response_time\nFROM\n  api_logs\nWHERE\n  $__timeFilter(timestamp)\nORDER BY\n  timestamp DESC\nLIMIT 20",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ]
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "PostgreSQL"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        },
+        "id": 5,
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "right",
+            "showLegend": true
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "title": "HTTP Status Code Distribution",
+        "type": "piechart",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "PostgreSQL"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  CASE\n    WHEN status_code >= 200 AND status_code < 300 THEN '2xx Success'\n    WHEN status_code >= 300 AND status_code < 400 THEN '3xx Redirection'\n    WHEN status_code >= 400 AND status_code < 500 THEN '4xx Client Error'\n    WHEN status_code >= 500 THEN '5xx Server Error'\n    ELSE 'Other'\n  END as metric,\n  count(*) as value\nFROM\n  api_logs\nWHERE\n  $__timeFilter(timestamp)\nGROUP BY\n  metric\nORDER BY\n  metric",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ]
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "PostgreSQL"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 0,
+              "spanNulls": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 500
+                },
+                {
+                  "color": "red",
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        },
+        "id": 6,
+        "options": {
+          "alignValue": "left",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "mergeValues": true,
+          "rowHeight": 0.9,
+          "showValue": "auto",
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "title": "API Response Times by Endpoint",
+        "type": "status-history",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "PostgreSQL"
+            },
+            "editorMode": "code",
+            "format": "time_series",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  timestamp as time,\n  path as metric,\n  response_time * 1000 as value\nFROM\n  api_logs\nWHERE\n  $__timeFilter(timestamp)\nORDER BY\n  time",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ]
+      }
+    ],
+    "refresh": "5s",
+    "schemaVersion": 38,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "API Monitoring Dashboard",
+    "uid": "api-monitoring",
+    "version": 1,
+    "weekStart": ""
+  }
